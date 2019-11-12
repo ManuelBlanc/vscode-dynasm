@@ -1,0 +1,29 @@
+{
+    "name": "dynasm-lang",
+    "displayName": "DynASM Lang",
+    "description": "Syntax highlighting for DynASM",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.39.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "dynasm",
+            "aliases": ["DynASM", "dynasm"],
+            "extensions": [".dasc", ".dash"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "dynasm",
+            "scopeName": "source.c.dynasm",
+            "path": "./syntaxes/dynasm.tmLanguage.json"
+        }],
+        "snippets":[{
+            "language": "dynasm",
+            "path": "./snippets/dynasm.code-snippets"
+        }]
+    }
+}

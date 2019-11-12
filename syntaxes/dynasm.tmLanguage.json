@@ -1,0 +1,178 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "DynASM",
+	"patterns": [
+		{
+			"include": "#dynasm"
+		},
+		{
+			"include": "#c"
+		},
+		{
+			"include": "source.c"
+		}
+	],
+	"repository": {
+		"directives": {
+			"patterns": [
+				{
+					"name": "keyword.other.dynasm",
+					"match": "\\.(?:actionlist|arch|capture|dumpcapture|endcapture|endmacro|externnames|globalnames|globals|nop|section|byte|dword|sbyte|word|dword)\\b"
+				},
+				{
+					"match": "(\\.(?:error|fatal|include))\\s+(.*)(?=$|//)",
+					"captures": {
+						"1": {
+							"name": "keyword.other.dynasm"
+						},
+						"2": {
+							"name": "string.unquoted.dynasm"
+						}
+					}
+				},
+				{
+					"name": "keyword.control.dynasm",
+					"match": "\\.(?:else|endif)\\b"
+				},
+				{
+					"begin": "\\.(?:elif|if)\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.control.dynasm"
+						}
+					},
+					"end": "(?=$|//)",
+					"patterns": [
+						{
+							"include": "source.lua"
+						}
+					]
+				},
+				{
+					"match": "(\\.type)\\s+(\\w+)",
+					"captures": {
+						"1": {
+							"name": "keyword.other.dynasm"
+						},
+						"2": {
+							"name": "entity.name.type.dynasm"
+						}
+					}
+				},
+				{
+					"match": "(\\.define)\\s+(\\w+)",
+					"captures": {
+						"1": {
+							"name": "keyword.other.dynasm"
+						},
+						"2": {
+							"name": "entity.name.function.dynasm"
+						}
+					}
+				},
+				{
+					"name": "meta.macro.dynasm",
+					"begin": "(\\.macro)\\s+(\\w+)",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.other.macro.dynasm"
+						},
+						"2": {
+							"name": "entity.name.function.dynasm"
+						}
+					},
+					"end": "(?=$|;|//)",
+					"patterns": [
+						{
+							"name": "variable.parameter.dynasm",
+							"match": "\\w+"
+						},
+						{
+							"name": "punctuation.separator.dynasm",
+							"match": ","
+						}
+					]
+				},
+				{
+					"name": "support.constant.dynasm",
+					"match": "\\b(?:arm|mips|ppc|x64|x86)\\b"
+				}
+			]
+		},
+		"asm": {
+			"patterns": [
+				{
+					"name": "constant.numeric.dynasm",
+					"match": "(?<![\\w\\d.<>])(?:0[xX][0-9A-Fa-f]+|\\d+)(?!:)"
+				},
+				{
+					"name": "storage.type.dynasm",
+					"match": "\\b(?:byte|word|dword|aword|qword|oword)\\b"
+				},
+				{
+					"name": "storage.modifier.dynasm",
+					"match": "\\b(?:extern)\\b"
+				},
+				{
+					"name": "keyword.operator.dynasm",
+					"match": "(?<![+\\-*/<>])[+\\-*/](?![+\\-*/<>])"
+				},
+				{
+					"name": "constant.other.label.dynasm",
+					"match": "[0-9]:|[<>][0-9]|(?<=\\s|\\|)[=-]>\\w+:?"
+				},
+				{
+					"name": "support.constant.dynasm",
+					"match": "\\b(rax|rcx|rdx|rbx|rsp|rbp|rsi|rdi|ax|cx|dx|bx|sp|bp|si|di|eax|ecx|edx|ebx|esp|ebp|esi|edi|al|cl|dl|bl|ah|ch|dh|bh|st0|st\\d+|[xy]mm\\d+|r\\d+[rwb]?)\\b"
+				},
+				{
+					"name": "support.function.dynasm",
+					"match": "(?i)\\b(?:a16|a32|adc|adc|adc|adc|adc|adcx|adcx|add|add|add|add|add|addpd|addpd|addps|addps|addsd|addsd|addss|addss|addsubpd|addsubpd|addsubps|addsubps|adox|adox|aesdec|aesdec|aesdeclast|aesdeclast|aesenc|aesenc|aesenclast|aesenclast|aesimc|aesimc|aeskeygenassist|aeskeygenassist|and|and|and|and|and|andnpd|andnpd|andnps|andnps|andpd|andpd|andps|andps|blendpd|blendpd|blendps|blendps|blendvpd|blendvpd|blendvps|blendvps|bsf|bsf|bsr|bsr|bswap|bswap|bt|bt|bt|bt|btc|btc|btc|btc|btr|btr|btr|btr|bts|bts|bts|bts|call|call|call|call|call|cbw|cdq|cdqe|clc|cld|clflush|cmc|cmova|cmova|cmovae|cmovae|cmovb|cmovb|cmovbe|cmovbe|cmovc|cmovc|cmove|cmove|cmovg|cmovg|cmovge|cmovge|cmovl|cmovl|cmovle|cmovle|cmovna|cmovna|cmovnae|cmovnae|cmovnb|cmovnb|cmovnbe|cmovnbe|cmovnc|cmovnc|cmovne|cmovne|cmovng|cmovng|cmovnge|cmovnge|cmovnl|cmovnl|cmovnle|cmovnle|cmovno|cmovno|cmovnp|cmovnp|cmovns|cmovns|cmovnz|cmovnz|cmovo|cmovo|cmovp|cmovp|cmovpe|cmovpe|cmovpo|cmovpo|cmovs|cmovs|cmovz|cmovz|cmp|cmp|cmp|cmp|cmp|cmppd|cmppd|cmpps|cmpps|cmpsb|cmpsd|cmpsd|cmpsd|cmpss|cmpss|cmpsw|comisd|comisd|comiss|comiss|cpuid|cqo|crc32|crc32|crc32|crc32|crc32|cs|cvtdq2pd|cvtdq2pd|cvtdq2ps|cvtdq2ps|cvtpd2dq|cvtpd2dq|cvtpd2ps|cvtpd2ps|cvtpi2pd|cvtpi2ps|cvtps2dq|cvtps2dq|cvtps2pd|cvtps2pd|cvtsd2si|cvtsd2si|cvtsd2si|cvtsd2si|cvtsd2ss|cvtsd2ss|cvtsi2sd|cvtsi2sd|cvtsi2sd|cvtsi2sd|cvtsi2ss|cvtsi2ss|cvtsi2ss|cvtsi2ss|cvtss2sd|cvtss2sd|cvtss2si|cvtss2si|cvtss2si|cvtss2si|cvttpd2dq|cvttpd2dq|cvttps2dq|cvttps2dq|cvttsd2si|cvttsd2si|cvttsd2si|cvttsd2si|cvttss2si|cvttss2si|cvttss2si|cvttss2si|cwd|cwde|dec|dec|div|div|divpd|divpd|divps|divps|divsd|divsd|divss|divss|dppd|dppd|dpps|dpps|ds|es|extractps|extractps|extractps|extrq|extrq|f2xm1|fabs|fadd|fadd|fadd|fadd|fadd|fadd|fadd|faddp|faddp|fchs|fclex|fcmovb|fcmovb|fcmovbe|fcmovbe|fcmove|fcmove|fcmovnb|fcmovnb|fcmovnbe|fcmovnbe|fcmovne|fcmovne|fcmovnu|fcmovnu|fcmovu|fcmovu|fcom|fcom|fcom|fcom|fcom|fcom|fcomi|fcomi|fcomip|fcomip|fcomp|fcomp|fcomp|fcomp|fcomp|fcomp|fcompp|fcos|fdecstp|fdiv|fdiv|fdiv|fdiv|fdiv|fdiv|fdiv|fdivp|fdivp|fdivr|fdivr|fdivr|fdivr|fdivr|fdivr|fdivr|fdivrp|fdivrp|fiadd|fiadd|ficom|ficom|ficomp|ficomp|fidiv|fidiv|fidivr|fidivr|fild|fild|fild|fimul|fimul|fincstp|fist|fist|fistp|fistp|fistp|fisttp|fisttp|fisttp|fisub|fisub|fisubr|fisubr|fld1|fld|fld|fld|fld|fldcw|fldenv|fldl2e|fldl2t|fldlg2|fldln2|fldpi|fldz|fmul|fmul|fmul|fmul|fmul|fmul|fmul|fmulp|fmulp|fnclex|fnop|fnstcw|fnstenv|fnstsw|fnstsw|fpatan|fpop|fprem1|fprem|fptan|frndint|fs|fscale|fsin|fsincos|fsqrt|fst|fst|fst|fstcw|fstenv|fstp|fstp|fstp|fstp|fstsw|fstsw|fsub|fsub|fsub|fsub|fsub|fsub|fsub|fsubp|fsubp|fsubr|fsubr|fsubr|fsubr|fsubr|fsubr|fsubr|fsubrp|fsubrp|ftst|fucom|fucom|fucomi|fucomi|fucomip|fucomip|fucomp|fucomp|fucompp|fwait|fxam|fxch|fxch|fxch|fxch|fxrstor|fxsave|fxtract|fyl2x|fyl2xp1|gs|haddpd|haddpd|haddps|haddps|hsubpd|hsubpd|hsubps|hsubps|idiv|idiv|imul|imul|imul|imul|imul|imul|imul|inc|inc|insertps|insertps|insertq|insertq|int1|int3|int|into|ja|jae|jb|jbe|jc|je|jg|jge|jl|jle|jmp|jmp|jmp|jmp|jmp|jna|jnae|jnb|jnbe|jnc|jne|jng|jnge|jnl|jnle|jno|jnp|jns|jnz|jo|jp|jpe|jpo|js|jz|lahf|lddqu|ldmxcsr|lea|leave|lfence|lock|lodsb|lodsd|lodsw|lzcnt|lzcnt|maskmovdqu|maxpd|maxpd|maxps|maxps|maxsd|maxsd|maxss|maxss|mfence|minpd|minpd|minps|minps|minsd|minsd|minss|minss|mov64|mov64|mov64|mov|mov|mov|mov|mov|movapd|movapd|movapd|movaps|movaps|movaps|movd|movd|movd|movd|movd|movd|movd|movd|movddup|movddup|movdqa|movdqa|movdqa|movdqu|movdqu|movdqu|movhlps|movhpd|movhpd|movhps|movhps|movlhps|movlpd|movlpd|movlps|movlps|movmskpd|movmskps|movntdq|movntdqa|movnti|movntpd|movntps|movntsd|movntss|movq|movq|movq|movsb|movsd|movsd|movsd|movsd|movshdup|movshdup|movsldup|movsldup|movss|movss|movss|movsw|movsx|movsx|movsx|movsx|movsx|movsx|movsx|movsx|movsx|movsx|movsxd|movsxd|movupd|movupd|movupd|movups|movups|movups|movzx|movzx|movzx|movzx|movzx|movzx|movzx|movzx|movzx|movzx|mpsadbw|mpsadbw|mul|mul|mulpd|mulpd|mulps|mulps|mulsd|mulsd|mulss|mulss|neg|neg|nop|not|not|o16|or|or|or|or|or|orpd|orpd|orps|orps|pabsb|pabsb|pabsd|pabsd|pabsw|pabsw|packssdw|packssdw|packsswb|packsswb|packusdw|packusdw|packuswb|packuswb|paddb|paddb|paddd|paddd|paddq|paddq|paddsb|paddsb|paddsw|paddsw|paddusb|paddusb|paddusw|paddusw|paddw|paddw|palignr|palignr|pand|pand|pandn|pandn|pause|pavgb|pavgb|pavgw|pavgw|pblendvb|pblendvb|pblendw|pblendw|pclmulqdq|pclmulqdq|pcmpeqb|pcmpeqb|pcmpeqd|pcmpeqd|pcmpeqq|pcmpeqq|pcmpeqw|pcmpeqw|pcmpestri|pcmpestri|pcmpestrm|pcmpestrm|pcmpgtb|pcmpgtb|pcmpgtd|pcmpgtd|pcmpgtq|pcmpgtq|pcmpgtw|pcmpgtw|pcmpistri|pcmpistri|pcmpistrm|pcmpistrm|pextrb|pextrb|pextrb|pextrd|pextrd|pextrq|pextrq|pextrw|pextrw|phaddd|phaddd|phaddsw|phaddsw|phaddw|phaddw|phminposuw|phminposuw|phsubd|phsubd|phsubsw|phsubsw|phsubw|phsubw|pinsrb|pinsrb|pinsrd|pinsrd|pinsrq|pinsrq|pinsrw|pinsrw|pmaddubsw|pmaddubsw|pmaddwd|pmaddwd|pmaxsb|pmaxsb|pmaxsd|pmaxsd|pmaxsw|pmaxsw|pmaxub|pmaxub|pmaxud|pmaxud|pmaxuw|pmaxuw|pminsb|pminsb|pminsd|pminsd|pminsw|pminsw|pminub|pminub|pminud|pminud|pminuw|pminuw|pmovmskb|pmovsxbd|pmovsxbd|pmovsxbq|pmovsxbq|pmovsxbw|pmovsxbw|pmovsxdq|pmovsxdq|pmovsxwd|pmovsxwd|pmovsxwq|pmovsxwq|pmovzxbd|pmovzxbd|pmovzxbq|pmovzxbq|pmovzxbw|pmovzxbw|pmovzxdq|pmovzxdq|pmovzxwd|pmovzxwd|pmovzxwq|pmovzxwq|pmuldq|pmuldq|pmulhrsw|pmulhrsw|pmulhuw|pmulhuw|pmulhw|pmulhw|pmulld|pmulld|pmullw|pmullw|pmuludq|pmuludq|pop|pop|pop|pop|pop|pop|popcnt|popcnt|popf|popfd|popfq|por|por|prefetchnta|prefetcht0|prefetcht1|prefetcht2|psadbw|psadbw|pshufb|pshufb|pshufd|pshufd|pshufhw|pshufhw|pshuflw|pshuflw|psignb|psignb|psignd|psignd|psignw|psignw|pslld|pslld|pslld|pslldq|psllq|psllq|psllq|psllw|psllw|psllw|psrad|psrad|psrad|psraw|psraw|psraw|psrld|psrld|psrld|psrldq|psrlq|psrlq|psrlq|psrlw|psrlw|psrlw|psubb|psubb|psubd|psubd|psubq|psubq|psubsb|psubsb|psubsw|psubsw|psubusb|psubusb|psubusw|psubusw|psubw|psubw|ptest|ptest|punpckhbw|punpckhbw|punpckhdq|punpckhdq|punpckhqdq|punpckhqdq|punpckhwd|punpckhwd|punpcklbw|punpcklbw|punpckldq|punpckldq|punpcklqdq|punpcklqdq|punpcklwd|punpcklwd|push|push|push|push|push|push|push|pushf|pushfd|pushfq|pxor|pxor|rcl|rcl|rcl|rcl|rcpps|rcpps|rcpss|rcpss|rcr|rcr|rcr|rcr|rdpmc|rdtsc|rep|repe|repne|repnz|repz|ret|ret|rol|rol|rol|rol|ror|ror|ror|ror|roundpd|roundpd|roundps|roundps|roundsd|roundsd|roundss|roundss|rsqrtps|rsqrtps|rsqrtss|rsqrtss|sahf|sal|sal|sal|sal|sar|sar|sar|sar|sbb|sbb|sbb|sbb|sbb|scasb|scasd|scasw|seta|seta|setae|setae|setb|setb|setbe|setbe|setc|setc|sete|sete|setg|setg|setge|setge|setl|setl|setle|setle|setna|setna|setnae|setnae|setnb|setnb|setnbe|setnbe|setnc|setnc|setne|setne|setng|setng|setnge|setnge|setnl|setnl|setnle|setnle|setno|setno|setnp|setnp|setns|setns|setnz|setnz|seto|seto|setp|setp|setpe|setpe|setpo|setpo|sets|sets|setz|setz|sfence|shl|shl|shl|shl|shld|shld|shld|shld|shld|shld|shld|shld|shr|shr|shr|shr|shrd|shrd|shrd|shrd|shrd|shrd|shrd|shrd|shufpd|shufpd|shufps|shufps|sqrtpd|sqrtpd|sqrtps|sqrtps|sqrtsd|sqrtsd|sqrtss|sqrtss|ss|stc|std|stmxcsr|stosb|stosd|stosw|sub|sub|sub|sub|sub|subpd|subpd|subps|subps|subsd|subsd|subss|subss|test|test|test|test|test|ucomisd|ucomisd|ucomiss|ucomiss|unpckhpd|unpckhpd|unpckhps|unpckhps|unpcklpd|unpcklpd|unpcklps|unpcklps|vaddpd|vaddpd|vaddpd|vaddpd|vaddps|vaddps|vaddps|vaddps|vaddsd|vaddsd|vaddss|vaddss|vaddsubpd|vaddsubpd|vaddsubpd|vaddsubpd|vaddsubps|vaddsubps|vaddsubps|vaddsubps|vaesdec|vaesdec|vaesdeclast|vaesdeclast|vaesenc|vaesenc|vaesenclast|vaesenclast|vaesimc|vaesimc|vaeskeygenassist|vaeskeygenassist|vandnpd|vandnpd|vandnpd|vandnpd|vandnps|vandnps|vandnps|vandnps|vandpd|vandpd|vandpd|vandpd|vandps|vandps|vandps|vandps|vblendpd|vblendpd|vblendpd|vblendpd|vblendps|vblendps|vblendps|vblendps|vblendvpd|vblendvpd|vblendvpd|vblendvpd|vblendvps|vblendvps|vblendvps|vblendvps|vbroadcastf128|vbroadcasti128|vbroadcastsd|vbroadcastsd|vbroadcastss|vbroadcastss|vbroadcastss|vbroadcastss|vcmppd|vcmppd|vcmppd|vcmppd|vcmpps|vcmpps|vcmpps|vcmpps|vcmpsd|vcmpsd|vcmpss|vcmpss|vcomisd|vcomisd|vcomiss|vcomiss|vcvtdq2pd|vcvtdq2pd|vcvtdq2pd|vcvtdq2pd|vcvtdq2ps|vcvtdq2ps|vcvtdq2ps|vcvtdq2ps|vcvtpd2dq|vcvtpd2dq|vcvtpd2dq|vcvtpd2dq|vcvtpd2ps|vcvtpd2ps|vcvtpd2ps|vcvtpd2ps|vcvtps2dq|vcvtps2dq|vcvtps2dq|vcvtps2dq|vcvtps2pd|vcvtps2pd|vcvtps2pd|vcvtps2pd|vcvtsd2si|vcvtsd2si|vcvtsd2si|vcvtsd2si|vcvtsd2ss|vcvtsd2ss|vcvtsi2sd|vcvtsi2sd|vcvtsi2sd|vcvtsi2sd|vcvtsi2ss|vcvtsi2ss|vcvtsi2ss|vcvtsi2ss|vcvtss2sd|vcvtss2sd|vcvtss2si|vcvtss2si|vcvtss2si|vcvtss2si|vcvttpd2dq|vcvttpd2dq|vcvttpd2dq|vcvttpd2dq|vcvttps2dq|vcvttps2dq|vcvttps2dq|vcvttps2dq|vcvttsd2si|vcvttsd2si|vcvttsd2si|vcvttsd2si|vcvttss2si|vcvttss2si|vcvttss2si|vcvttss2si|vdivpd|vdivpd|vdivpd|vdivpd|vdivps|vdivps|vdivps|vdivps|vdivsd|vdivsd|vdivss|vdivss|vdppd|vdppd|vdpps|vdpps|vdpps|vdpps|vextractf128|vextractf128|vextracti128|vextracti128|vextractps|vextractps|vhaddpd|vhaddpd|vhaddpd|vhaddpd|vhaddps|vhaddps|vhaddps|vhaddps|vhsubpd|vhsubpd|vhsubpd|vhsubpd|vhsubps|vhsubps|vhsubps|vhsubps|vinsertf128|vinsertf128|vinserti128|vinserti128|vinsertps|vinsertps|vlddqu|vlddqu|vldmxcsr|vmaskmovdqu|vmaskmovpd|vmaskmovpd|vmaskmovpd|vmaskmovpd|vmaskmovps|vmaskmovps|vmaskmovps|vmaskmovps|vmaxpd|vmaxpd|vmaxpd|vmaxpd|vmaxps|vmaxps|vmaxps|vmaxps|vmaxsd|vmaxsd|vmaxss|vmaxss|vminpd|vminpd|vminpd|vminpd|vminps|vminps|vminps|vminps|vminsd|vminsd|vminss|vminss|vmovapd|vmovapd|vmovapd|vmovapd|vmovapd|vmovapd|vmovaps|vmovaps|vmovaps|vmovaps|vmovaps|vmovaps|vmovd|vmovd|vmovd|vmovd|vmovd|vmovd|vmovd|vmovd|vmovddup|vmovddup|vmovddup|vmovddup|vmovdqa|vmovdqa|vmovdqa|vmovdqa|vmovdqa|vmovdqa|vmovdqu|vmovdqu|vmovdqu|vmovdqu|vmovdqu|vmovdqu|vmovhlps|vmovhpd|vmovhpd|vmovhps|vmovhps|vmovlhps|vmovlpd|vmovlpd|vmovlps|vmovlps|vmovmskpd|vmovmskpd|vmovmskps|vmovmskps|vmovntdq|vmovntdq|vmovntdqa|vmovntdqa|vmovntpd|vmovntpd|vmovntps|vmovntps|vmovq|vmovq|vmovq|vmovsd|vmovsd|vmovsd|vmovshdup|vmovshdup|vmovshdup|vmovshdup|vmovsldup|vmovsldup|vmovsldup|vmovsldup|vmovss|vmovss|vmovss|vmovupd|vmovupd|vmovupd|vmovupd|vmovupd|vmovupd|vmovups|vmovups|vmovups|vmovups|vmovups|vmovups|vmpsadbw|vmpsadbw|vmpsadbw|vmpsadbw|vmulpd|vmulpd|vmulpd|vmulpd|vmulps|vmulps|vmulps|vmulps|vmulsd|vmulsd|vmulss|vmulss|vorpd|vorpd|vorpd|vorpd|vorps|vorps|vorps|vorps|vpabsb|vpabsb|vpabsb|vpabsb|vpabsd|vpabsd|vpabsd|vpabsd|vpabsw|vpabsw|vpabsw|vpabsw|vpackssdw|vpackssdw|vpackssdw|vpackssdw|vpacksswb|vpacksswb|vpacksswb|vpacksswb|vpackusdw|vpackusdw|vpackusdw|vpackusdw|vpackuswb|vpackuswb|vpackuswb|vpackuswb|vpaddb|vpaddb|vpaddb|vpaddb|vpaddd|vpaddd|vpaddd|vpaddd|vpaddq|vpaddq|vpaddq|vpaddq|vpaddsb|vpaddsb|vpaddsb|vpaddsb|vpaddsw|vpaddsw|vpaddsw|vpaddsw|vpaddusb|vpaddusb|vpaddusb|vpaddusb|vpaddusw|vpaddusw|vpaddusw|vpaddusw|vpaddw|vpaddw|vpaddw|vpaddw|vpalignr|vpalignr|vpalignr|vpalignr|vpand|vpand|vpand|vpand|vpandn|vpandn|vpandn|vpandn|vpavgb|vpavgb|vpavgb|vpavgb|vpavgw|vpavgw|vpavgw|vpavgw|vpblendd|vpblendd|vpblendd|vpblendd|vpblendvb|vpblendvb|vpblendvb|vpblendvb|vpblendw|vpblendw|vpblendw|vpblendw|vpbroadcastb|vpbroadcastb|vpbroadcastb|vpbroadcastb|vpbroadcastd|vpbroadcastd|vpbroadcastd|vpbroadcastd|vpbroadcastq|vpbroadcastq|vpbroadcastq|vpbroadcastq|vpbroadcastw|vpbroadcastw|vpbroadcastw|vpbroadcastw|vpclmulqdq|vpclmulqdq|vpcmpeqb|vpcmpeqb|vpcmpeqb|vpcmpeqb|vpcmpeqd|vpcmpeqd|vpcmpeqd|vpcmpeqd|vpcmpeqq|vpcmpeqq|vpcmpeqq|vpcmpeqq|vpcmpeqw|vpcmpeqw|vpcmpeqw|vpcmpeqw|vpcmpestri|vpcmpestri|vpcmpestrm|vpcmpestrm|vpcmpgtb|vpcmpgtb|vpcmpgtb|vpcmpgtb|vpcmpgtd|vpcmpgtd|vpcmpgtd|vpcmpgtd|vpcmpgtq|vpcmpgtq|vpcmpgtq|vpcmpgtq|vpcmpgtw|vpcmpgtw|vpcmpgtw|vpcmpgtw|vpcmpistri|vpcmpistri|vpcmpistrm|vpcmpistrm|vperm2f128|vperm2f128|vperm2i128|vperm2i128|vpermd|vpermd|vpermilpd|vpermilpd|vpermilpd|vpermilpd|vpermilpd|vpermilpd|vpermilpd|vpermilpd|vpermilps|vpermilps|vpermilps|vpermilps|vpermilps|vpermilps|vpermilps|vpermilps|vpermpd|vpermpd|vpermps|vpermps|vpermq|vpermq|vpextrb|vpextrb|vpextrb|vpextrd|vpextrd|vpextrq|vpextrq|vpextrw|vpextrw|vphaddd|vphaddd|vphaddd|vphaddd|vphaddsw|vphaddsw|vphaddsw|vphaddsw|vphaddw|vphaddw|vphaddw|vphaddw|vphminposuw|vphminposuw|vphsubd|vphsubd|vphsubd|vphsubd|vphsubsw|vphsubsw|vphsubsw|vphsubsw|vphsubw|vphsubw|vphsubw|vphsubw|vpinsrb|vpinsrb|vpinsrd|vpinsrd|vpinsrq|vpinsrq|vpinsrw|vpinsrw|vpmaddubsw|vpmaddubsw|vpmaddubsw|vpmaddubsw|vpmaddwd|vpmaddwd|vpmaddwd|vpmaddwd|vpmaskmovd|vpmaskmovd|vpmaskmovd|vpmaskmovd|vpmaskmovq|vpmaskmovq|vpmaskmovq|vpmaskmovq|vpmaxsb|vpmaxsb|vpmaxsb|vpmaxsb|vpmaxsd|vpmaxsd|vpmaxsd|vpmaxsd|vpmaxsw|vpmaxsw|vpmaxsw|vpmaxsw|vpmaxub|vpmaxub|vpmaxub|vpmaxub|vpmaxud|vpmaxud|vpmaxud|vpmaxud|vpmaxuw|vpmaxuw|vpmaxuw|vpmaxuw|vpminsb|vpminsb|vpminsb|vpminsb|vpminsd|vpminsd|vpminsd|vpminsd|vpminsw|vpminsw|vpminsw|vpminsw|vpminub|vpminub|vpminub|vpminub|vpminud|vpminud|vpminud|vpminud|vpminuw|vpminuw|vpminuw|vpminuw|vpmovmskb|vpmovmskb|vpmovsxbd|vpmovsxbd|vpmovsxbd|vpmovsxbd|vpmovsxbq|vpmovsxbq|vpmovsxbq|vpmovsxbq|vpmovsxbw|vpmovsxbw|vpmovsxbw|vpmovsxbw|vpmovsxdq|vpmovsxdq|vpmovsxdq|vpmovsxdq|vpmovsxwd|vpmovsxwd|vpmovsxwd|vpmovsxwd|vpmovsxwq|vpmovsxwq|vpmovsxwq|vpmovsxwq|vpmovzxbd|vpmovzxbd|vpmovzxbd|vpmovzxbd|vpmovzxbq|vpmovzxbq|vpmovzxbq|vpmovzxbq|vpmovzxbw|vpmovzxbw|vpmovzxbw|vpmovzxbw|vpmovzxdq|vpmovzxdq|vpmovzxdq|vpmovzxdq|vpmovzxwd|vpmovzxwd|vpmovzxwd|vpmovzxwd|vpmovzxwq|vpmovzxwq|vpmovzxwq|vpmovzxwq|vpmuldq|vpmuldq|vpmuldq|vpmuldq|vpmulhrsw|vpmulhrsw|vpmulhrsw|vpmulhrsw|vpmulhuw|vpmulhuw|vpmulhuw|vpmulhuw|vpmulhw|vpmulhw|vpmulhw|vpmulhw|vpmulld|vpmulld|vpmulld|vpmulld|vpmullw|vpmullw|vpmullw|vpmullw|vpmuludq|vpmuludq|vpmuludq|vpmuludq|vpor|vpor|vpor|vpor|vpsadbw|vpsadbw|vpsadbw|vpsadbw|vpshufb|vpshufb|vpshufb|vpshufb|vpshufd|vpshufd|vpshufd|vpshufd|vpshufhw|vpshufhw|vpshufhw|vpshufhw|vpshuflw|vpshuflw|vpshuflw|vpshuflw|vpsignb|vpsignb|vpsignb|vpsignb|vpsignd|vpsignd|vpsignd|vpsignd|vpsignw|vpsignw|vpsignw|vpsignw|vpslld|vpslld|vpslld|vpslld|vpslld|vpslld|vpslldq|vpslldq|vpsllq|vpsllq|vpsllq|vpsllq|vpsllq|vpsllq|vpsllvd|vpsllvd|vpsllvd|vpsllvd|vpsllvq|vpsllvq|vpsllvq|vpsllvq|vpsllw|vpsllw|vpsllw|vpsllw|vpsllw|vpsllw|vpsrad|vpsrad|vpsrad|vpsrad|vpsrad|vpsrad|vpsravd|vpsravd|vpsravd|vpsravd|vpsraw|vpsraw|vpsraw|vpsraw|vpsraw|vpsraw|vpsrld|vpsrld|vpsrld|vpsrld|vpsrld|vpsrld|vpsrldq|vpsrldq|vpsrlq|vpsrlq|vpsrlq|vpsrlq|vpsrlq|vpsrlq|vpsrlvd|vpsrlvd|vpsrlvd|vpsrlvd|vpsrlvq|vpsrlvq|vpsrlvq|vpsrlvq|vpsrlw|vpsrlw|vpsrlw|vpsrlw|vpsrlw|vpsrlw|vpsubb|vpsubb|vpsubb|vpsubb|vpsubd|vpsubd|vpsubd|vpsubd|vpsubq|vpsubq|vpsubq|vpsubq|vpsubsb|vpsubsb|vpsubsb|vpsubsb|vpsubsw|vpsubsw|vpsubsw|vpsubsw|vpsubusb|vpsubusb|vpsubusb|vpsubusb|vpsubusw|vpsubusw|vpsubusw|vpsubusw|vpsubw|vpsubw|vpsubw|vpsubw|vptest|vptest|vptest|vptest|vptestpd|vptestpd|vptestpd|vptestpd|vptestps|vptestps|vptestps|vptestps|vpunpckhbw|vpunpckhbw|vpunpckhbw|vpunpckhbw|vpunpckhdq|vpunpckhdq|vpunpckhdq|vpunpckhdq|vpunpckhqdq|vpunpckhqdq|vpunpckhqdq|vpunpckhqdq|vpunpckhwd|vpunpckhwd|vpunpckhwd|vpunpckhwd|vpunpcklbw|vpunpcklbw|vpunpcklbw|vpunpcklbw|vpunpckldq|vpunpckldq|vpunpckldq|vpunpckldq|vpunpcklqdq|vpunpcklqdq|vpunpcklqdq|vpunpcklqdq|vpunpcklwd|vpunpcklwd|vpunpcklwd|vpunpcklwd|vpxor|vpxor|vpxor|vpxor|vrcpps|vrcpps|vrcpps|vrcpps|vrcpss|vrcpss|vroundpd|vroundpd|vroundpd|vroundpd|vroundps|vroundps|vroundps|vroundps|vroundsd|vroundsd|vroundss|vroundss|vrsqrtps|vrsqrtps|vrsqrtps|vrsqrtps|vrsqrtss|vrsqrtss|vshufpd|vshufpd|vshufpd|vshufpd|vshufps|vshufps|vshufps|vshufps|vsqrtpd|vsqrtpd|vsqrtpd|vsqrtpd|vsqrtps|vsqrtps|vsqrtps|vsqrtps|vsqrtsd|vsqrtsd|vsqrtss|vsqrtss|vstmxcsr|vsubpd|vsubpd|vsubpd|vsubpd|vsubps|vsubps|vsubps|vsubps|vsubsd|vsubsd|vsubss|vsubss|vucomisd|vucomisd|vucomiss|vucomiss|vunpckhpd|vunpckhpd|vunpckhpd|vunpckhpd|vunpckhps|vunpckhps|vunpckhps|vunpckhps|vunpcklpd|vunpcklpd|vunpcklpd|vunpcklpd|vunpcklps|vunpcklps|vunpcklps|vunpcklps|vxorpd|vxorpd|vxorpd|vxorpd|vxorps|vxorps|vxorps|vxorps|vzeroall|vzeroupper|wait|xchg|xchg|xchg|xor|xor|xor|xor|xor|xorpd|xorpd|xorps|xorps)\\b"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.double-slash.dynasm",
+				"match": "//.*(?=$)"
+			}]
+		},
+		"dynasm": {
+			"name": "meta.preprocessor.dynasm",
+			"begin": "^\\s*\\|(?!\\|)",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.block.dynasm"
+				}
+			},
+			"end": "(?=$)",
+			"patterns": [
+				{
+					"include": "#directives"
+				},
+				{
+					"include": "#asm"
+				},
+				{
+					"include": "#comments"
+				}
+			]
+		},
+		"c": {
+			"name": "meta.block.c.dynasm",
+			"begin": "^\\s*\\|\\|",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.block.c.dynasm"
+				}
+			},
+			"end": "(?=$)",
+			"patterns": [
+				{
+					"include": "source.c"
+				}
+			]
+		}
+	},
+	"scopeName": "source.c.dynasm"
+}
