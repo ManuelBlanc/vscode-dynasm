@@ -30,7 +30,7 @@
     "macro": {
         "prefix": [ ".macro", "macro" ],
         "body": [
-            "|.macro ${1:macro_name}, ${2:macro_arg}",
+            "|.macro ${1:macro_name}, ${2:macro_args}",
             "|$0",
             "|.endmacro"
         ]
