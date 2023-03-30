@@ -1,90 +1,90 @@
 {
-    "byte": {
-        "prefix": [ ".byte", "byte" ],
-        "body": [ ".byte $0" ]
-    },
-    "sbyte": {
-        "prefix": [ ".sbyte", "sbyte" ],
-        "body": [ ".sbyte $0" ]
-    },
-    "space": {
-        "prefix": [ ".space", "space" ],
-        "body": [ ".space $0" ]
-    },
-    "dword": {
-        "prefix": [ ".dword", "dword" ],
-        "body": [ ".dword $0" ]
-    },
-    "word": {
-        "prefix": [ ".word", "word" ],
-        "body": [ ".word $0" ]
-    },
-    "align": {
-        "prefix": [ ".align", "align" ],
-        "body": [ ".align ${1|2,4,8,16,32,64,128,256,word,dword,aword,qword,oword|}", ]
-    },
-    "arch": {
-        "prefix": [ ".arch", "arch" ],
-        "body": [ ".arch ${1|arm,mips,ppc,x64,x86|}", ]
-    },
-    "macro": {
-        "prefix": [ ".macro", "macro" ],
-        "body": [
-            "|.macro ${1:macro_name}, ${2:macro_args}",
-            "|$0",
-            "|.endmacro"
-        ]
-    },
-    "capture": {
-        "prefix": [ ".capture", "capture" ],
-        "body": [
-            "|.capture ${1:capture_name}",
-            "|$0",
-            "|.endcapture"
-        ]
-    },
-    "actionlist": {
-        "prefix": [ ".actionlist", "actionlist" ],
-        "body": [ ".actionlist $0" ]
-    },
-    "externnames": {
-        "prefix": [ ".externnames", "externnames" ],
-        "body": [ ".externnames $0" ]
-    },
-    "globalnames": {
-        "prefix": [ ".globalnames", "globalnames" ],
-        "body": [ ".globalnames $0" ]
-    },
-    "globals": {
-        "prefix": [ ".globals", "globals" ],
-        "body": [ ".globals $0" ]
-    },
-    "include": {
-        "prefix": [ ".include", "include" ],
-        "body": [ ".include $0" ]
-    },
-    "fatal": {
-        "prefix": [ ".fatal", "fatal" ],
-        "body": [ ".fatal $0" ]
-    },
-    "error": {
-        "prefix": [ ".error", "error" ],
-        "body": [ ".error $0" ]
-    },
-    "section": {
-        "prefix": [ ".section", "section" ],
-        "body": [ ".section $0" ]
-    },
-    "type": {
-        "prefix": [ ".type", "type" ],
-        "body": [ ".type ${1:name}, ${2:ctype}${3:, default_reg}" ]
-    },
-    "define": {
-        "prefix": [ ".define", "define" ],
-        "body": [ ".define ${1:name}{2:, substitution}" ]
-    },
-    "dumpcapture": {
-        "prefix": [ ".dumpcapture", "dumpcapture" ],
-        "body": [ ".dumpcapture $0" ]
-    }
+	"byte": {
+		"prefix": [ ".byte", "byte" ],
+		"body": [ ".byte $0" ]
+	},
+	"sbyte": {
+		"prefix": [ ".sbyte", "sbyte" ],
+		"body": [ ".sbyte $0" ]
+	},
+	"space": {
+		"prefix": [ ".space", "space" ],
+		"body": [ ".space $0" ]
+	},
+	"dword": {
+		"prefix": [ ".dword", "dword" ],
+		"body": [ ".dword $0" ]
+	},
+	"word": {
+		"prefix": [ ".word", "word" ],
+		"body": [ ".word $0" ]
+	},
+	"align": {
+		"prefix": [ ".align", "align" ],
+		"body": [ ".align ${1|2,4,8,16,32,64,128,256,word,dword,aword,qword,oword|}", ]
+	},
+	"arch": {
+		"prefix": [ ".arch", "arch" ],
+		"body": [ ".arch ${1|arm,mips,ppc,x64,x86|}", ]
+	},
+	"macro": {
+		"prefix": [ ".macro", "macro" ],
+		"body": [
+			"|.macro ${1:macro_name}, ${2:macro_args}",
+			"|$0",
+			"|.endmacro"
+		]
+	},
+	"capture": {
+		"prefix": [ ".capture", "capture" ],
+		"body": [
+			"|.capture ${1:capture_name}",
+			"|$0",
+			"|.endcapture"
+		]
+	},
+	"actionlist": {
+		"prefix": [ ".actionlist", "actionlist" ],
+		"body": [ ".actionlist $0" ]
+	},
+	"externnames": {
+		"prefix": [ ".externnames", "externnames" ],
+		"body": [ ".externnames $0" ]
+	},
+	"globalnames": {
+		"prefix": [ ".globalnames", "globalnames" ],
+		"body": [ ".globalnames $0" ]
+	},
+	"globals": {
+		"prefix": [ ".globals", "globals" ],
+		"body": [ ".globals $0" ]
+	},
+	"include": {
+		"prefix": [ ".include", "include" ],
+		"body": [ ".include $0" ]
+	},
+	"fatal": {
+		"prefix": [ ".fatal", "fatal" ],
+		"body": [ ".fatal $0" ]
+	},
+	"error": {
+		"prefix": [ ".error", "error" ],
+		"body": [ ".error $0" ]
+	},
+	"section": {
+		"prefix": [ ".section", "section" ],
+		"body": [ ".section $0" ]
+	},
+	"type": {
+		"prefix": [ ".type", "type" ],
+		"body": [ ".type ${1:name}, ${2:ctype}${3:, default_reg}" ]
+	},
+	"define": {
+		"prefix": [ ".define", "define" ],
+		"body": [ ".define ${1:name}{2:, substitution}" ]
+	},
+	"dumpcapture": {
+		"prefix": [ ".dumpcapture", "dumpcapture" ],
+		"body": [ ".dumpcapture $0" ]
+	}
 }
